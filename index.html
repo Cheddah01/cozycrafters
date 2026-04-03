@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cozy Crafters SMP — Year One</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --orange-bright: #FF8C42;
+  --orange-deep: #E85D26;
+  --yellow-warm: #FFD166;
+  --yellow-light: #FFF3C4;
+  --amber: #F4A623;
+  --cream: #FFF8EE;
+  --dark: #1A1008;
+  --dark-card: #2A1A0A;
+  --dark-card-hover: #3A2510;
+  --text-warm: #FFE8CC;
+  --text-muted: #BFA47A;
+  --glow-orange: rgba(255, 140, 66, 0.3);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--dark);
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--dark);
+  color: var(--text-warm);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ===== NOISE TEXTURE OVERLAY ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  padding: 2rem;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(255, 140, 66, 0.15) 0%, rgba(232, 93, 38, 0.05) 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid rgba(255, 140, 66, 0.3);
+  border-radius: 100px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--orange-bright);
+  margin-bottom: 2rem;
+  animation: fadeDown 0.8s ease-out;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 140, 66, 0.05);
+}
+
+.hero-title {
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 1s ease-out 0.2s both;
+}
+
+.hero-title .line1 {
+  display: block;
+  color: var(--yellow-warm);
+  text-shadow: 0 0 60px rgba(255, 209, 102, 0.3);
+}
+
+.hero-title .line2 {
+  display: block;
+  background: linear-gradient(135deg, var(--orange-bright), var(--orange-deep));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  color: var(--text-muted);
+  max-width: 500px;
+  font-weight: 300;
+  animation: fadeUp 1s ease-out 0.4s both;
+}
+
+.hero-stats-row {
+  display: flex;
+  gap: 3rem;
+  margin-top: 3rem;
+  animation: fadeUp 1s ease-out 0.6s both;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--yellow-warm);
+  font-family: 'Space Mono', monospace;
+}
+
+.hero-stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  animation: bounce 2s infinite, fadeUp 1s ease-out 1s both;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.scroll-hint svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--orange-bright);
+}
+
+/* ===== SECTION STYLES ===== */
+.section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  margin-bottom: 3rem;
+}
+
+.section-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--orange-bright);
+  margin-bottom: 0.75rem;
+}
+
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--yellow-warm);
+  letter-spacing: -0.02em;
+}
+
+.section-desc {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  max-width: 600px;
+  font-weight: 300;
+}
+
+/* ===== DIVIDER ===== */
+.divider {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.divider-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 140, 66, 0.3), transparent);
+}
+
+/* ===== AWARD CARDS ===== */
+.awards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.award-card {
+  background: var(--dark-card);
+  border: 1px solid rgba(255, 140, 66, 0.1);
+  border-radius: 16px;
+  padding: 1.75rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.award-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--orange-bright), var(--yellow-warm));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.award-card:hover {
+  background: var(--dark-card-hover);
+  border-color: rgba(255, 140, 66, 0.25);
+  transform: translateY(-2px);
+}
+
+.award-card:hover::before {
+  opacity: 1;
+}
+
+.award-emoji {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.award-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--orange-bright);
+  font-family: 'Space Mono', monospace;
+  margin-bottom: 0.5rem;
+}
+
+.award-player {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--yellow-warm);
+}
+
+.award-stat {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+  font-weight: 300;
+}
+
+/* ===== LEADERBOARD ===== */
+.leaderboard-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2rem;
+}
+
+.leaderboard {
+  background: var(--dark-card);
+  border: 1px solid rgba(255, 140, 66, 0.1);
+  border-radius: 16px;
+  padding: 1.75rem;
+}
+
+.leaderboard-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--orange-bright);
+  font-family: 'Space Mono', monospace;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.leaderboard-row {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255, 140, 66, 0.06);
+  position: relative;
+}
+
+.leaderboard-row:last-child { border-bottom: none; }
+
+.lb-rank {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  width: 2rem;
+  flex-shrink: 0;
+}
+
+.lb-rank.gold { color: var(--yellow-warm); font-weight: 700; }
+.lb-rank.silver { color: #C0C0C0; font-weight: 700; }
+.lb-rank.bronze { color: #CD7F32; font-weight: 700; }
+
+.lb-bar-bg {
+  flex: 1;
+  height: 28px;
+  background: rgba(255, 140, 66, 0.06);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.lb-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(255, 140, 66, 0.2), rgba(255, 209, 102, 0.15));
+  transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lb-bar-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.75rem;
+  z-index: 1;
+}
+
+.lb-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-warm);
+}
+
+.lb-value {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--orange-bright);
+}
+
+/* ===== WORDS CLOUD ===== */
+.words-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.word-bubble {
+  padding: 0.5rem 1.25rem;
+  border-radius: 100px;
+  background: var(--dark-card);
+  border: 1px solid rgba(255, 140, 66, 0.1);
+  font-family: 'Space Mono', monospace;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.word-bubble:hover {
+  border-color: var(--orange-bright);
+  background: rgba(255, 140, 66, 0.1);
+  transform: scale(1.05);
+}
+
+.word-bubble .word { color: var(--text-warm); }
+.word-bubble .count {
+  color: var(--text-muted);
+  font-size: 0.75em;
+  margin-left: 0.35rem;
+}
+
+.word-bubble.size-1 { font-size: 1.3rem; }
+.word-bubble.size-2 { font-size: 1.1rem; }
+.word-bubble.size-3 { font-size: 0.95rem; }
+.word-bubble.size-4 { font-size: 0.85rem; }
+.word-bubble.size-5 { font-size: 0.75rem; }
+
+/* ===== LORE CARDS ===== */
+.lore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.lore-card {
+  background: var(--dark-card);
+  border: 1px solid rgba(255, 140, 66, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.lore-card:hover {
+  border-color: rgba(255, 140, 66, 0.25);
+  transform: translateY(-2px);
+}
+
+.lore-card .lore-number {
+  font-family: 'Space Mono', monospace;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--orange-bright);
+  line-height: 1;
+  opacity: 0.8;
+}
+
+.lore-card .lore-label {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  font-weight: 300;
+}
+
+.lore-card .lore-detail {
+  font-size: 0.75rem;
+  color: var(--orange-bright);
+  font-family: 'Space Mono', monospace;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 140, 66, 0.1);
+}
+
+/* ===== COMMANDS SECTION ===== */
+.commands-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 800px;
+}
+
+.cmd-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--dark-card);
+  border: 1px solid rgba(255, 140, 66, 0.1);
+  border-radius: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.cmd-chip:hover {
+  border-color: var(--orange-bright);
+  background: rgba(255, 140, 66, 0.08);
+}
+
+.cmd-chip .cmd-name { color: var(--yellow-warm); }
+.cmd-chip .cmd-count { color: var(--text-muted); font-size: 0.7rem; }
+
+/* ===== GHOST BUILDERS ===== */
+.ghost-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+}
+
+.ghost-table th {
+  text-align: left;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 140, 66, 0.15);
+}
+
+.ghost-table td {
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid rgba(255, 140, 66, 0.06);
+  font-size: 0.85rem;
+}
+
+.ghost-table td:first-child { color: var(--yellow-warm); font-weight: 500; }
+.ghost-table td:nth-child(2) { font-family: 'Space Mono', monospace; color: var(--orange-bright); font-size: 0.8rem; }
+.ghost-table td:nth-child(3) { color: var(--text-muted); font-size: 0.8rem; }
+
+/* ===== TIMELINE ===== */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+  max-width: 700px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--orange-bright), var(--yellow-warm), transparent);
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -2rem;
+  top: 0.35rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--orange-bright);
+  border: 2px solid var(--dark);
+  transform: translateX(-4px);
+}
+
+.timeline-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--orange-bright);
+  letter-spacing: 0.05em;
+}
+
+.timeline-text {
+  font-size: 1rem;
+  color: var(--text-warm);
+  margin-top: 0.25rem;
+}
+
+.timeline-detail {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+  font-weight: 300;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.footer-heart {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  display: block;
+  filter: grayscale(0.3);
+}
+
+.footer-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero-stats-row {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .hero-stat-number { font-size: 2rem; }
+  .awards-grid { grid-template-columns: 1fr; }
+  .leaderboard-container { grid-template-columns: 1fr; }
+  .lore-grid { grid-template-columns: 1fr; }
+  .section { padding: 3rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-badge">✦ Est. 2025 ✦</div>
+  <h1 class="hero-title">
+    <span class="line1">Year One</span>
+    <span class="line2">Cozy Crafters</span>
+  </h1>
+  <p class="hero-subtitle">365 days of blocks, laughs, and one player who broke past the world border.</p>
+  <div class="hero-stats-row">
+    <div class="hero-stat">
+      <div class="hero-stat-number">14M+</div>
+      <div class="hero-stat-label">Blocks Placed</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-number">75K+</div>
+      <div class="hero-stat-label">Messages Sent</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-number">1,811</div>
+      <div class="hero-stat-label">"Welcome Back"s</div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll to explore</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+  </div>
+</section>
+
+<!-- ===== PLAYER AWARDS ===== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-header">
+    <div class="section-tag">✦ Player Awards</div>
+    <h2 class="section-title">The Superlatives</h2>
+    <p class="section-desc">Every server has its legends. Here are yours.</p>
+  </div>
+  <div class="awards-grid">
+    <div class="award-card">
+      <span class="award-emoji">🏗️</span>
+      <div class="award-title">The Architect</div>
+      <div class="award-player">ItsCook21</div>
+      <div class="award-stat">3,515,003 blocks placed · 3,463,263 broken</div>
+    </div>
+    <div class="award-card">
+      <span class="award-emoji">💛</span>
+      <div class="award-title">The Soul of the Server</div>
+      <div class="award-player">Cheddah01</div>
+      <div class="award-stat">697 logins · 19,490 messages · 1,653 chunks explored</div>
+    </div>
+    <div class="award-card">
+      <span class="award-emoji">👋</span>
+      <div class="award-title">The Official Greeter</div>
+      <div class="award-player">XDragon6798</div>
+      <div class="award-stat">558 "welcome back"s sent</div>
+    </div>
+    <div class="award-card">
+      <span class="award-emoji">😂</span>
+      <div class="award-title">The LOL King</div>
+      <div class="award-player">miningking11</div>
+      <div class="award-stat">548 "lol"s typed in chat</div>
+    </div>
+    <div class="award-card">
+      <span class="award-emoji">🧭</span>
+      <div class="award-title">The World Border Breaker</div>
+      <div class="award-player">Solauris</div>
+      <div class="award-stat">Made it 2,121,281 blocks from spawn</div>
+    </div>
+    <div class="award-card">
+      <span class="award-emoji">🗣️</span>
+      <div class="award-title">The Chatterbox</div>
+      <div class="award-player">Cheddah01</div>
+      <div class="award-stat">19,490 chat messages sent</div>
+    </div>
+    <div class="award-card">
+      <span class="award-emoji">⛏️</span>
+      <div class="award-title">The Demolisher</div>
+      <div class="award-player">BiscuitBouncer</div>
+      <div class="award-stat">2,806,166 blocks broken</div>
+    </div>
+    <div class="award-card">
+      <span class="award-emoji">🌍</span>
+      <div class="award-title">The Explorer</div>
+      <div class="award-player">Cheddah01</div>
+      <div class="award-stat">1,653 unique chunks visited</div>
+    </div>
+    <div class="award-card">
+      <span class="award-emoji">👻</span>
+      <div class="award-title">The Ghost Builder</div>
+      <div class="award-player">Solauris</div>
+      <div class="award-stat">1,222,562 blocks left behind — last seen Nov 2025</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LEADERBOARDS ===== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-header">
+    <div class="section-tag">✦ Leaderboards</div>
+    <h2 class="section-title">The Rankings</h2>
+    <p class="section-desc">Who put in the work this year.</p>
+  </div>
+  <div class="leaderboard-container">
+    <div class="leaderboard">
+      <div class="leaderboard-title">🧱 Blocks Placed</div>
+      <div class="leaderboard-row"><span class="lb-rank gold">01</span><div class="lb-bar-bg"><div class="lb-bar" data-width="100"></div><div class="lb-bar-content"><span class="lb-name">ItsCook21</span><span class="lb-value">3,515,003</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank silver">02</span><div class="lb-bar-bg"><div class="lb-bar" data-width="89"></div><div class="lb-bar-content"><span class="lb-name">Cheddah01</span><span class="lb-value">3,141,881</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank bronze">03</span><div class="lb-bar-bg"><div class="lb-bar" data-width="59"></div><div class="lb-bar-content"><span class="lb-name">BiscuitBouncer</span><span class="lb-value">2,064,442</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">04</span><div class="lb-bar-bg"><div class="lb-bar" data-width="35"></div><div class="lb-bar-content"><span class="lb-name">Solauris</span><span class="lb-value">1,222,562</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">05</span><div class="lb-bar-bg"><div class="lb-bar" data-width="12"></div><div class="lb-bar-content"><span class="lb-name">nokc</span><span class="lb-value">429,174</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">06</span><div class="lb-bar-bg"><div class="lb-bar" data-width="9"></div><div class="lb-bar-content"><span class="lb-name">CaduCL28</span><span class="lb-value">320,270</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">07</span><div class="lb-bar-bg"><div class="lb-bar" data-width="7"></div><div class="lb-bar-content"><span class="lb-name">XDragon6798</span><span class="lb-value">242,344</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">08</span><div class="lb-bar-bg"><div class="lb-bar" data-width="7"></div><div class="lb-bar-content"><span class="lb-name">Veystar</span><span class="lb-value">241,784</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">09</span><div class="lb-bar-bg"><div class="lb-bar" data-width="7"></div><div class="lb-bar-content"><span class="lb-name">Rodrigo_vsc</span><span class="lb-value">233,897</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">10</span><div class="lb-bar-bg"><div class="lb-bar" data-width="5"></div><div class="lb-bar-content"><span class="lb-name">coshmee</span><span class="lb-value">184,400</span></div></div></div>
+    </div>
+    <div class="leaderboard">
+      <div class="leaderboard-title">💬 Messages Sent</div>
+      <div class="leaderboard-row"><span class="lb-rank gold">01</span><div class="lb-bar-bg"><div class="lb-bar" data-width="100"></div><div class="lb-bar-content"><span class="lb-name">Cheddah01</span><span class="lb-value">19,490</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank silver">02</span><div class="lb-bar-bg"><div class="lb-bar" data-width="58"></div><div class="lb-bar-content"><span class="lb-name">XDragon6798</span><span class="lb-value">11,267</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank bronze">03</span><div class="lb-bar-bg"><div class="lb-bar" data-width="34"></div><div class="lb-bar-content"><span class="lb-name">Veystar</span><span class="lb-value">6,691</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">04</span><div class="lb-bar-bg"><div class="lb-bar" data-width="31"></div><div class="lb-bar-content"><span class="lb-name">coshmee</span><span class="lb-value">6,071</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">05</span><div class="lb-bar-bg"><div class="lb-bar" data-width="31"></div><div class="lb-bar-content"><span class="lb-name">FluffiBunnii</span><span class="lb-value">6,002</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">06</span><div class="lb-bar-bg"><div class="lb-bar" data-width="27"></div><div class="lb-bar-content"><span class="lb-name">CaduCL28</span><span class="lb-value">5,228</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">07</span><div class="lb-bar-bg"><div class="lb-bar" data-width="25"></div><div class="lb-bar-content"><span class="lb-name">Solauris</span><span class="lb-value">4,952</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">08</span><div class="lb-bar-bg"><div class="lb-bar" data-width="22"></div><div class="lb-bar-content"><span class="lb-name">miningking11</span><span class="lb-value">4,272</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">09</span><div class="lb-bar-bg"><div class="lb-bar" data-width="22"></div><div class="lb-bar-content"><span class="lb-name">BiscuitBouncer</span><span class="lb-value">4,219</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">10</span><div class="lb-bar-bg"><div class="lb-bar" data-width="19"></div><div class="lb-bar-content"><span class="lb-name">Rodrigo_vsc</span><span class="lb-value">3,787</span></div></div></div>
+    </div>
+    <div class="leaderboard">
+      <div class="leaderboard-title">🔑 Most Logins</div>
+      <div class="leaderboard-row"><span class="lb-rank gold">01</span><div class="lb-bar-bg"><div class="lb-bar" data-width="100"></div><div class="lb-bar-content"><span class="lb-name">Cheddah01</span><span class="lb-value">697</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank silver">02</span><div class="lb-bar-bg"><div class="lb-bar" data-width="59"></div><div class="lb-bar-content"><span class="lb-name">Veystar</span><span class="lb-value">411</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank bronze">03</span><div class="lb-bar-bg"><div class="lb-bar" data-width="44"></div><div class="lb-bar-content"><span class="lb-name">XDragon6798</span><span class="lb-value">307</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">04</span><div class="lb-bar-bg"><div class="lb-bar" data-width="32"></div><div class="lb-bar-content"><span class="lb-name">Rodrigo_vsc</span><span class="lb-value">221</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">05</span><div class="lb-bar-bg"><div class="lb-bar" data-width="30"></div><div class="lb-bar-content"><span class="lb-name">BiscuitBouncer</span><span class="lb-value">211</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">06</span><div class="lb-bar-bg"><div class="lb-bar" data-width="26"></div><div class="lb-bar-content"><span class="lb-name">coshmee</span><span class="lb-value">181</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">07</span><div class="lb-bar-bg"><div class="lb-bar" data-width="24"></div><div class="lb-bar-content"><span class="lb-name">Eijan_is_best</span><span class="lb-value">165</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">08</span><div class="lb-bar-bg"><div class="lb-bar" data-width="21"></div><div class="lb-bar-content"><span class="lb-name">CaduCL28</span><span class="lb-value">147</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">09</span><div class="lb-bar-bg"><div class="lb-bar" data-width="20"></div><div class="lb-bar-content"><span class="lb-name">Solauris</span><span class="lb-value">139</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">10</span><div class="lb-bar-bg"><div class="lb-bar" data-width="15"></div><div class="lb-bar-content"><span class="lb-name">miningking11</span><span class="lb-value">107</span></div></div></div>
+    </div>
+    <div class="leaderboard">
+      <div class="leaderboard-title">🤗 Most Welcomed Back</div>
+      <div class="leaderboard-row"><span class="lb-rank gold">01</span><div class="lb-bar-bg"><div class="lb-bar" data-width="100"></div><div class="lb-bar-content"><span class="lb-name">Cheddah01</span><span class="lb-value">265</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank silver">02</span><div class="lb-bar-bg"><div class="lb-bar" data-width="69"></div><div class="lb-bar-content"><span class="lb-name">Veystar</span><span class="lb-value">184</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank bronze">03</span><div class="lb-bar-bg"><div class="lb-bar" data-width="48"></div><div class="lb-bar-content"><span class="lb-name">XDragon6798</span><span class="lb-value">128</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">04</span><div class="lb-bar-bg"><div class="lb-bar" data-width="40"></div><div class="lb-bar-content"><span class="lb-name">BiscuitBouncer</span><span class="lb-value">106</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">05</span><div class="lb-bar-bg"><div class="lb-bar" data-width="35"></div><div class="lb-bar-content"><span class="lb-name">coshmee</span><span class="lb-value">93</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">06</span><div class="lb-bar-bg"><div class="lb-bar" data-width="32"></div><div class="lb-bar-content"><span class="lb-name">Rodrigo_vsc</span><span class="lb-value">86</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">07</span><div class="lb-bar-bg"><div class="lb-bar" data-width="32"></div><div class="lb-bar-content"><span class="lb-name">Solauris</span><span class="lb-value">85</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">08</span><div class="lb-bar-bg"><div class="lb-bar" data-width="31"></div><div class="lb-bar-content"><span class="lb-name">miningking11</span><span class="lb-value">82</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">09</span><div class="lb-bar-bg"><div class="lb-bar" data-width="20"></div><div class="lb-bar-content"><span class="lb-name">ItsCook21</span><span class="lb-value">54</span></div></div></div>
+      <div class="leaderboard-row"><span class="lb-rank">10</span><div class="lb-bar-bg"><div class="lb-bar" data-width="17"></div><div class="lb-bar-content"><span class="lb-name">Powerofthedogs90</span><span class="lb-value">45</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MOST USED WORDS ===== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-header" style="text-align:center;">
+    <div class="section-tag">✦ Chat Culture</div>
+    <h2 class="section-title">What We Say Most</h2>
+    <p class="section-desc" style="margin:0.5rem auto 0;">The words that define Cozy Crafters.</p>
+  </div>
+  <div class="words-grid" style="margin-top:2.5rem;">
+    <div class="word-bubble size-1"><span class="word">wb</span> <span class="count">1,811</span></div>
+    <div class="word-bubble size-1"><span class="word">ty</span> <span class="count">879</span></div>
+    <div class="word-bubble size-1"><span class="word">lol</span> <span class="count">807</span></div>
+    <div class="word-bubble size-2"><span class="word">?</span> <span class="count">801</span></div>
+    <div class="word-bubble size-2"><span class="word">lmao</span> <span class="count">677</span></div>
+    <div class="word-bubble size-2"><span class="word">yeah</span> <span class="count">535</span></div>
+    <div class="word-bubble size-3"><span class="word">no</span> <span class="count">466</span></div>
+    <div class="word-bubble size-3"><span class="word">yes</span> <span class="count">424</span></div>
+    <div class="word-bubble size-3"><span class="word">oh</span> <span class="count">423</span></div>
+    <div class="word-bubble size-3"><span class="word">tot</span> <span class="count">407</span></div>
+    <div class="word-bubble size-4"><span class="word">ok</span> <span class="count">371</span></div>
+    <div class="word-bubble size-4"><span class="word">hi</span> <span class="count">322</span></div>
+    <div class="word-bubble size-4"><span class="word">gg</span> <span class="count">315</span></div>
+    <div class="word-bubble size-4"><span class="word">what</span> <span class="count">280</span></div>
+    <div class="word-bubble size-5"><span class="word">thanks</span> <span class="count">221</span></div>
+    <div class="word-bubble size-5"><span class="word">idk</span> <span class="count">214</span></div>
+    <div class="word-bubble size-5"><span class="word">damn</span> <span class="count">209</span></div>
+    <div class="word-bubble size-5"><span class="word">brb</span> <span class="count">204</span></div>
+    <div class="word-bubble size-5"><span class="word">lmfao</span> <span class="count">204</span></div>
+    <div class="word-bubble size-5"><span class="word">t</span> <span class="count">191</span></div>
+  </div>
+</section>
+
+<!-- ===== SERVER LORE ===== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-header">
+    <div class="section-tag">✦ Server Lore</div>
+    <h2 class="section-title">The Numbers Behind the World</h2>
+    <p class="section-desc">Things we discovered hiding in a year of data.</p>
+  </div>
+  <div class="lore-grid">
+    <div class="lore-card">
+      <div class="lore-number">2.1M</div>
+      <div class="lore-label">Furthest distance from spawn reached by a player</div>
+      <div class="lore-detail">Solauris broke past the world border</div>
+    </div>
+    <div class="lore-card">
+      <div class="lore-number">5.9M</div>
+      <div class="lore-label">Block actions on the busiest day ever</div>
+      <div class="lore-detail">November 5th, 2025</div>
+    </div>
+    <div class="lore-card">
+      <div class="lore-number">697</div>
+      <div class="lore-label">Most logins by a single player</div>
+      <div class="lore-detail">Cheddah01 — nearly twice a day</div>
+    </div>
+    <div class="lore-card">
+      <div class="lore-number">78,941</div>
+      <div class="lore-label">Times /fill was used</div>
+      <div class="lore-detail">The most used command on the server</div>
+    </div>
+    <div class="lore-card">
+      <div class="lore-number">1,811</div>
+      <div class="lore-label">Times "wb" was said in chat</div>
+      <div class="lore-detail">The most spoken word on the server</div>
+    </div>
+    <div class="lore-card">
+      <div class="lore-number">#1</div>
+      <div class="lore-label">Most active spot on the entire server</div>
+      <div class="lore-detail">It's a farm.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TOP COMMANDS ===== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-header">
+    <div class="section-tag">✦ Commands</div>
+    <h2 class="section-title">Most Used Commands</h2>
+    <p class="section-desc">What the server runs on.</p>
+  </div>
+  <div class="commands-list">
+    <div class="cmd-chip"><span class="cmd-name">/fill</span><span class="cmd-count">78,941</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/setblock</span><span class="cmd-count">35,777</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/shop</span><span class="cmd-count">12,275</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/pv</span><span class="cmd-count">9,257</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/home</span><span class="cmd-count">9,113</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/abyss</span><span class="cmd-count">4,431</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/back</span><span class="cmd-count">4,319</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/msg</span><span class="cmd-count">1,720</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/tpaccept</span><span class="cmd-count">1,717</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/spawn</span><span class="cmd-count">1,699</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/sellall</span><span class="cmd-count">1,194</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/tp</span><span class="cmd-count">1,105</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/rtp</span><span class="cmd-count">1,090</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/npc</span><span class="cmd-count">1,029</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/tpa</span><span class="cmd-count">978</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/fly</span><span class="cmd-count">904</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/ah</span><span class="cmd-count">876</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/sell</span><span class="cmd-count">865</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/rewards</span><span class="cmd-count">852</span></div>
+    <div class="cmd-chip"><span class="cmd-name">/tpahere</span><span class="cmd-count">850</span></div>
+  </div>
+</section>
+
+<!-- ===== GHOST BUILDERS ===== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-header">
+    <div class="section-tag">✦ Ghosts</div>
+    <h2 class="section-title">The Ones Who Left Their Mark</h2>
+    <p class="section-desc">Players who built something and haven't been back in months. Their builds remain.</p>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="ghost-table">
+      <thead><tr><th>Player</th><th>Blocks Left Behind</th><th>Last Seen</th></tr></thead>
+      <tbody>
+        <tr><td>Solauris</td><td>1,222,562</td><td>Nov 26, 2025</td></tr>
+        <tr><td>FluffiBunnii</td><td>153,656</td><td>Oct 26, 2025</td></tr>
+        <tr><td>Memehow_</td><td>36,972</td><td>Nov 13, 2025</td></tr>
+        <tr><td>GideonTheDog</td><td>19,107</td><td>Oct 24, 2025</td></tr>
+        <tr><td>.RONINN1588</td><td>14,336</td><td>Nov 15, 2025</td></tr>
+        <tr><td>FicsitSlave</td><td>10,056</td><td>Nov 5, 2025</td></tr>
+        <tr><td>Bone_Man_</td><td>9,905</td><td>Oct 24, 2025</td></tr>
+        <tr><td>deadsilent</td><td>6,865</td><td>Nov 11, 2025</td></tr>
+        <tr><td>gengamorph</td><td>5,256</td><td>Oct 20, 2025</td></tr>
+        <tr><td>tokyo_ngl</td><td>4,999</td><td>Nov 10, 2025</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== BUSIEST DAYS ===== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-header">
+    <div class="section-tag">✦ Timeline</div>
+    <h2 class="section-title">The Busiest Days</h2>
+    <p class="section-desc">The days the server came alive.</p>
+  </div>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">November 5, 2025</div>
+      <div class="timeline-text">5,931,954 block actions</div>
+      <div class="timeline-detail">The biggest day in server history</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">October 12, 2025</div>
+      <div class="timeline-text">2,838,426 block actions</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">November 14, 2025</div>
+      <div class="timeline-text">2,115,891 block actions</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">October 6, 2025</div>
+      <div class="timeline-text">1,651,052 block actions</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">October 29, 2025</div>
+      <div class="timeline-text">1,000,328 block actions</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">October 17, 2025</div>
+      <div class="timeline-text">821,950 block actions</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">March 28, 2026</div>
+      <div class="timeline-text">692,833 block actions</div>
+      <div class="timeline-detail">Still going strong in Year Two</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer reveal">
+  <span class="footer-heart">🧡</span>
+  <p style="color:var(--yellow-warm); font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">Here's to Year Two.</p>
+  <p class="footer-text">Cozy Crafters SMP — Year One Wrapped</p>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Animate bars when leaderboard becomes visible
+      entry.target.querySelectorAll('.lb-bar').forEach((bar, i) => {
+        setTimeout(() => {
+          bar.style.width = bar.dataset.width + '%';
+        }, i * 80);
+      });
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Initialize bars at 0
+document.querySelectorAll('.lb-bar').forEach(bar => {
+  bar.style.width = '0%';
+});
+</script>
+
+</body>
+</html>

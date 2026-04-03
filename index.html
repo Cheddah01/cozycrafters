@@ -617,6 +617,96 @@ body::before {
   transform: translateY(0);
 }
 
+/* ===== ERA TIMELINE ===== */
+.era-timeline {
+  position: relative;
+  max-width: 800px;
+}
+
+.era-timeline::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--orange-bright), var(--yellow-warm), var(--orange-deep), var(--yellow-warm), transparent);
+}
+
+.era {
+  position: relative;
+  padding-left: 60px;
+  padding-bottom: 2.5rem;
+}
+
+.era-dot {
+  position: absolute;
+  left: 14px;
+  top: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--dark);
+  border: 3px solid var(--orange-bright);
+  z-index: 1;
+}
+
+.era-dot.golden { border-color: var(--yellow-warm); background: rgba(255, 209, 102, 0.15); }
+.era-dot.quiet { border-color: var(--text-muted); }
+.era-dot.peak { border-color: var(--orange-deep); background: rgba(232, 93, 38, 0.15); }
+.era-dot.sad { border-color: #888; }
+.era-dot.now { border-color: var(--yellow-warm); background: rgba(255, 209, 102, 0.3); box-shadow: 0 0 12px rgba(255, 209, 102, 0.4); }
+
+.era-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--orange-bright);
+  margin-bottom: 0.35rem;
+}
+
+.era-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--yellow-warm);
+  margin-bottom: 0.35rem;
+}
+
+.era-stats {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.era-desc {
+  font-size: 0.9rem;
+  color: var(--text-warm);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.era-quote {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 140, 66, 0.06);
+  border-left: 2px solid rgba(255, 140, 66, 0.3);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.era-quote .quote-author {
+  display: block;
+  margin-top: 0.25rem;
+  font-style: normal;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--orange-bright);
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .hero-stats-row {
@@ -1482,6 +1572,89 @@ body::before {
       <div class="lore-label">Total deaths</div>
       <div class="lore-detail">627 of those were PvP</div>
     </div>
+  </div>
+</section>
+
+<!-- ===== THE STORY OF YEAR ONE ===== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-header">
+    <div class="section-tag">✦ The Full Story</div>
+    <h2 class="section-title">The Eras of Year One</h2>
+    <p class="section-desc">198,382 chat messages. One year. This is the story they tell.</p>
+  </div>
+  <div class="era-timeline">
+
+    <div class="era">
+      <div class="era-dot golden"></div>
+      <div class="era-date">May 15, 2025</div>
+      <div class="era-title">Genesis</div>
+      <div class="era-stats">33,354 messages · 42 players</div>
+      <div class="era-desc">The server opens. The very first conversation is me and FluffiiBunnii — "lmao" and "hmmm." BiscuitBouncer arrives and says "the laggg." tokyo_ngl shows up with "hai." Within 24 hours, 0sca has already killed the Ender Dragon. The first "wb" is said. The tone is set.</div>
+      <div class="era-quote">"he killed the dragon in like 15 mins lmao"<span class="quote-author">— Cheddah01, May 16</span></div>
+    </div>
+
+    <div class="era">
+      <div class="era-dot golden"></div>
+      <div class="era-date">June 2025</div>
+      <div class="era-title">The Golden Age</div>
+      <div class="era-stats">53,415 messages · 40 players · busiest month ever</div>
+      <div class="era-desc">The server is alive like never before. Arkansas Man arrives and becomes instant folklore. Nova and Yukimiracle have the first server wedding on June 5 — everyone shows up, BiscuitBouncer tries to bail. The marriage plugin launches and chaos erupts. CaduCL28 declares "I have returned." XDragon6798 says "hello" for the first time and proceeds to never stop playing.</div>
+      <div class="era-quote">"god do I love this server"<span class="quote-author">— Nova2O09, June 5 (one month before they leave forever)</span></div>
+    </div>
+
+    <div class="era">
+      <div class="era-dot quiet"></div>
+      <div class="era-date">July 2025</div>
+      <div class="era-title">The Quiet Summer</div>
+      <div class="era-stats">208 messages · 8 players</div>
+      <div class="era-desc">Summer hits. The server goes almost silent — 208 messages the entire month. Only 8 players speak at all. The world sits empty and waiting. But the builds remain.</div>
+    </div>
+
+    <div class="era">
+      <div class="era-dot"></div>
+      <div class="era-date">August – September 2025</div>
+      <div class="era-title">The Comeback</div>
+      <div class="era-stats">25,572 messages · new players arriving</div>
+      <div class="era-desc">The server finds new life. Powerofthedogs90 arrives (first word: "k") and immediately starts ringing bells. EaglesDJDan shows up asking "voicechat?" and starts mining every diamond in existence. coshmee joins and says "ty ty" — then begins building the most beautiful town on the server with Rodrigo_vsc. HeartOfChaos1290 arrives and starts calling everyone "cheese man."</div>
+      <div class="era-quote">"remember when i crashed the server with lava"<span class="quote-author">— BiscuitBouncer, August 13</span></div>
+    </div>
+
+    <div class="era">
+      <div class="era-dot peak"></div>
+      <div class="era-date">October – November 2025</div>
+      <div class="era-title">The Second Peak</div>
+      <div class="era-stats">58,639 messages · 43 players · 5.9M block actions in one day</div>
+      <div class="era-desc">The server's absolute peak. 43 unique players chatting — the most ever. November 5th sees 5.9 million block actions in a single day. Veystar joins and immediately proposes marriage (rejected). Eijan_is_best arrives yelling "YOO." Arkansas Man declares himself "commander of the north legion army." The Justice for Cadu movement begins. Halloween happens. Everything is happening at once.</div>
+      <div class="era-quote">"justice for Cadu!!!!"<span class="quote-author">— Yugodz7, November 1</span></div>
+    </div>
+
+    <div class="era">
+      <div class="era-dot sad"></div>
+      <div class="era-date">Late November – December 2025</div>
+      <div class="era-title">The Departure</div>
+      <div class="era-stats">Activity falling · core players going silent</div>
+      <div class="era-desc">One by one, the lights go out. FluffiiBunnii says "ill be back in a bit maybe" on October 26 — they don't come back. Arkansas Man's final words: "I am Arkansas man commander of the north legion army. Goodnight." GideonTheDog says "oop" and disappears. deadsilent's last message: "imma get off for the night. gnite." VoidHeart leaves with a bang on December 10. HeartOfChaos1290's quiet goodbye: "o7."</div>
+      <div class="era-quote">"god I love this server"<span class="quote-author">— HeartOfChaos1290, November 13 (three days before their last message)</span></div>
+    </div>
+
+    <div class="era">
+      <div class="era-dot"></div>
+      <div class="era-date">January – March 2026</div>
+      <div class="era-title">The Faithful Few</div>
+      <div class="era-stats">18,079 messages · core group holds the line</div>
+      <div class="era-desc">The server is smaller but not gone. XDragon6798, BiscuitBouncer, coshmee, miningking11, and CaduCL28 keep showing up. XDragon completes Monsters Hunted — killing every hostile mob type. coshmee hits a 60,706:1 kill/death ratio. Season 2 talk begins. The world is quieter now, but the people still here love it.</div>
+      <div class="era-quote">"cozy crafters season 2 confirmed??"<span class="quote-author">— Yugodz7, March 14</span></div>
+    </div>
+
+    <div class="era">
+      <div class="era-dot now"></div>
+      <div class="era-date">April 2026</div>
+      <div class="era-title">The Anniversary</div>
+      <div class="era-stats">One year · 198,382 messages · 6,656 hours played · 1.4M mobs killed</div>
+      <div class="era-desc">And here we are. One year of blocks placed and broken, of "wb" and "ty," of weddings and wars, of Arkansas Man and pufferfish dinners, of FluffiiBunnii jumping half a million times and VoidHeart breaking past the world border. Every number on this page is a moment someone chose to spend here. Thank you for all of them.</div>
+    </div>
+
   </div>
 </section>
 

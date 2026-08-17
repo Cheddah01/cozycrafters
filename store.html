@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cozy Crafters SMP — Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --orange-bright: #FF8C42;
+  --orange-deep: #E85D26;
+  --yellow-warm: #FFD166;
+  --dark: #1A1008;
+  --dark-card: #2A1A0A;
+  --dark-card-hover: #3A2510;
+  --text-warm: #FFE8CC;
+  --text-muted: #BFA47A;
+  --green: #7DDC95;
+  --red: #FF8C8C;
+}
+
+html { background: var(--dark); }
+
+body {
+  min-height: 100vh;
+  font-family: 'Outfit', sans-serif;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255, 140, 66, 0.14), transparent 42%),
+    var(--dark);
+  color: var(--text-warm);
+  line-height: 1.6;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.page {
+  width: min(1040px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 5rem;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 4rem;
+}
+
+.brand {
+  font-weight: 800;
+  color: var(--yellow-warm);
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+.back-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover { color: var(--orange-bright); }
+
+.hero {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 3rem;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--orange-bright);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+h1 {
+  color: var(--yellow-warm);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.25rem;
+}
+
+.hero p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  font-weight: 300;
+}
+
+.checkout-shell {
+  background: rgba(42, 26, 10, 0.86);
+  border: 1px solid rgba(255, 140, 66, 0.14);
+  border-radius: 22px;
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+}
+
+.username-block {
+  max-width: 520px;
+  margin: 0 auto 2rem;
+}
+
+.username-block label {
+  display: block;
+  color: var(--yellow-warm);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.username-block p {
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  margin-bottom: 0.75rem;
+}
+
+.username-block input {
+  width: 100%;
+  border: 1px solid rgba(255, 140, 66, 0.24);
+  border-radius: 12px;
+  background: rgba(26, 16, 8, 0.85);
+  color: var(--text-warm);
+  padding: 0.9rem 1rem;
+  font: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.username-block input:focus {
+  border-color: var(--orange-bright);
+  box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.12);
+}
+
+.rank-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.rank-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 270px;
+  padding: 1.75rem;
+  background: var(--dark-card);
+  border: 1px solid rgba(255, 140, 66, 0.13);
+  border-radius: 18px;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.rank-card:hover {
+  transform: translateY(-3px);
+  background: var(--dark-card-hover);
+  border-color: rgba(255, 140, 66, 0.3);
+}
+
+.rank-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--orange-bright), var(--yellow-warm));
+}
+
+.rank-tag {
+  color: var(--orange-bright);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 0.75rem;
+}
+
+.rank-name {
+  color: var(--yellow-warm);
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.65rem;
+}
+
+.rank-desc {
+  color: var(--text-muted);
+  font-weight: 300;
+  flex: 1;
+}
+
+.rank-note {
+  margin-top: 1.5rem;
+  color: var(--text-muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+}
+
+.buy-button {
+  width: 100%;
+  margin-top: 1rem;
+  border: 0;
+  border-radius: 11px;
+  padding: 0.9rem 1rem;
+  background: linear-gradient(135deg, var(--orange-bright), var(--orange-deep));
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 0.96rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+}
+
+.buy-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.buy-button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.status {
+  min-height: 1.5rem;
+  margin-top: 1.25rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.status.error { color: var(--red); }
+.status.success { color: var(--green); }
+
+.security-note {
+  margin: 2rem auto 0;
+  max-width: 680px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.security-note strong { color: var(--text-warm); }
+
+@media (max-width: 700px) {
+  .page { padding-top: 1.25rem; }
+  .topbar { margin-bottom: 3rem; }
+  .rank-grid { grid-template-columns: 1fr; }
+  .rank-card { min-height: 240px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="topbar">
+    <a class="brand" href="/">Cozy Crafters SMP</a>
+    <a class="back-link" href="/">← Back to site</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">✦ Cozy Crafters Store</div>
+      <h1>Support the server.</h1>
+      <p>Choose a supporter rank, enter your Minecraft Java username, and complete payment securely through Stripe. Your rank is delivered automatically after payment is confirmed.</p>
+    </section>
+
+    <section class="checkout-shell" aria-labelledby="store-title">
+      <div class="username-block">
+        <label for="minecraft-username" id="store-title">Minecraft username</label>
+        <p>Enter the exact Java Edition username that should receive the rank.</p>
+        <input
+          id="minecraft-username"
+          type="text"
+          maxlength="16"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="YourUsername"
+        >
+      </div>
+
+      <div class="rank-grid">
+        <article class="rank-card">
+          <div class="rank-tag">Server Support</div>
+          <div class="rank-name">Supporter</div>
+          <p class="rank-desc">Purchase the Supporter rank and help fund Cozy Crafters SMP.</p>
+          <div class="rank-note">One-time purchase · Price shown at checkout</div>
+          <button class="buy-button" type="button" data-rank="supporter">Purchase Supporter</button>
+        </article>
+
+        <article class="rank-card">
+          <div class="rank-tag">Server Support</div>
+          <div class="rank-name">Patron</div>
+          <p class="rank-desc">Purchase the Patron rank and provide additional support for Cozy Crafters SMP.</p>
+          <div class="rank-note">One-time purchase · Price shown at checkout</div>
+          <button class="buy-button" type="button" data-rank="patron">Purchase Patron</button>
+        </article>
+      </div>
+
+      <div id="checkout-status" class="status" role="status" aria-live="polite"></div>
+    </section>
+
+    <p class="security-note"><strong>Secure checkout:</strong> payment details are entered on Stripe's hosted checkout page. Cozy Crafters does not receive or store your card number.</p>
+  </main>
+</div>
+
+<script>
+const CHECKOUT_ENDPOINT = 'https://cozy-store-api.colbysthickey.workers.dev/checkout';
+const usernameInput = document.getElementById('minecraft-username');
+const statusElement = document.getElementById('checkout-status');
+const purchaseButtons = Array.from(document.querySelectorAll('.buy-button'));
+
+function setStatus(message, type = '') {
+  statusElement.textContent = message;
+  statusElement.className = `status${type ? ` ${type}` : ''}`;
+}
+
+function setButtonsDisabled(disabled) {
+  purchaseButtons.forEach(button => {
+    button.disabled = disabled;
+  });
+}
+
+async function startCheckout(rank) {
+  const username = usernameInput.value.trim();
+
+  if (!/^[A-Za-z0-9_]{3,16}$/.test(username)) {
+    setStatus('Enter a valid Minecraft username (3–16 letters, numbers, or underscores).', 'error');
+    usernameInput.focus();
+    return;
+  }
+
+  setButtonsDisabled(true);
+  setStatus('Opening secure checkout…');
+
+  try {
+    const response = await fetch(CHECKOUT_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, rank })
+    });
+
+    let data;
+
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error('The store returned an invalid response.');
+    }
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Checkout could not be started.');
+    }
+
+    if (!data.checkoutUrl) {
+      throw new Error('Checkout URL was not returned.');
+    }
+
+    setStatus('Redirecting to Stripe…', 'success');
+    window.location.assign(data.checkoutUrl);
+  } catch (error) {
+    console.error('Store checkout error:', error);
+    setStatus(error instanceof Error ? error.message : 'Checkout could not be started.', 'error');
+    setButtonsDisabled(false);
+  }
+}
+
+purchaseButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    startCheckout(button.dataset.rank);
+  });
+});
+
+usernameInput.addEventListener('keydown', event => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    purchaseButtons[0]?.focus();
+  }
+});
+</script>
+</body>
+</html>
